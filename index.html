@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Happy Wedding - Wedding Organizer Bogor Terbaik</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
       rel="stylesheet"
@@ -17,10 +18,13 @@
     <style>
       body {
         font-family: "Inter", sans-serif;
+        overflow-x: hidden;
       }
       .font-serif {
         font-family: "Playfair Display", serif;
       }
+
+      /* Tab Animation */
       .tab-content {
         display: none;
       }
@@ -28,6 +32,7 @@
         display: block;
         animation: fadeIn 0.6s ease;
       }
+
       @keyframes fadeIn {
         from {
           opacity: 0;
@@ -39,20 +44,29 @@
         }
       }
 
-      /* Gallery UI/UX Fix */
+      /* Gallery UI Fix */
       .gallery-item {
         cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        border: 4px solid transparent;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
+        overflow: hidden;
       }
-      .gallery-item:active {
-        transform: scale(0.92);
+      .gallery-item::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(22, 101, 52, 0); /* Green tint on hover */
+        z-index: 10;
+        transition: background 0.3s ease;
+      }
+      .gallery-item:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
       }
       .gallery-item.selected {
-        border-color: #d4af37 !important;
+        outline: 4px solid #166534;
+        outline-offset: -4px;
         transform: scale(0.96);
-        box-shadow: 0 15px 30px rgba(212, 175, 55, 0.2);
       }
 
       .gallery-grid {
@@ -67,7 +81,23 @@
         }
       }
 
-      /* Custom Scrollbar */
+      /* Social Media Colors */
+      .footer-icon {
+        transition: all 0.3s ease;
+      }
+      .icon-wa {
+        color: #25d366;
+      }
+      .icon-ig {
+        color: #e1306c;
+      }
+      .icon-tt {
+        color: #000000;
+      }
+      .footer-icon:hover {
+        transform: translateY(-5px);
+      }
+
       html::-webkit-scrollbar {
         width: 6px;
       }
@@ -81,12 +111,12 @@
   <body class="bg-[#FCFBFA] text-stone-800">
     <nav
       id="navbar"
-      class="fixed w-full z-50 bg-white/95 backdrop-blur-md border-b border-stone-100"
+      class="fixed w-full z-50 bg-white/95 backdrop-blur-md border-b border-stone-100 transition-transform duration-500"
     >
       <div
         class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center"
       >
-        <a href="#home" class="flex flex-col group">
+        <a href="#home" class="flex flex-col group shrink-0">
           <span
             class="font-serif text-xl font-bold tracking-widest text-stone-800 uppercase group-hover:text-emerald-800 transition"
             >Happy Wedding</span
@@ -97,54 +127,66 @@
           >
         </a>
 
-        <div
-          class="hidden lg:flex items-center space-x-10 text-[11px] tracking-widest uppercase font-bold text-stone-600"
-        >
-          <a href="#home" class="hover:text-emerald-700 transition">Home</a>
-          <a href="#about" class="hover:text-emerald-700 transition"
-            >About Us</a
+        <div class="hidden lg:flex items-center space-x-12">
+          <div
+            class="flex items-center space-x-10 text-[11px] tracking-widest uppercase font-bold text-stone-600"
           >
-          <a href="#services" class="hover:text-emerald-700 transition"
-            >Gallery</a
-          >
-          <a href="#location" class="hover:text-emerald-700 transition"
-            >Location</a
-          >
-        </div>
-
-        <div class="hidden md:block border-l border-stone-200 pl-8">
-          <a
-            href="https://wa.me/6285777641319"
-            target="_blank"
-            class="bg-stone-800 text-white px-8 py-3 text-[10px] tracking-widest uppercase hover:bg-emerald-800 transition shadow-lg font-bold"
-            >WhatsApp Us</a
-          >
+            <a href="#home" class="hover:text-emerald-700 transition">Home</a>
+            <a href="#about" class="hover:text-emerald-700 transition"
+              >About Us</a
+            >
+            <a href="#services" class="hover:text-emerald-700 transition"
+              >Gallery</a
+            >
+            <a href="#location" class="hover:text-emerald-700 transition"
+              >Location</a
+            >
+          </div>
+          <div class="border-l border-stone-200 pl-8">
+            <a
+              href="https://wa.me/6285894141698"
+              class="bg-stone-800 text-white px-8 py-3 text-[10px] tracking-widest uppercase hover:bg-emerald-800 transition shadow-lg font-bold rounded-lg"
+              >Contact Us</a
+            >
+          </div>
         </div>
 
         <button
           id="menu-btn"
-          class="lg:hidden flex items-center justify-center p-2 text-stone-800"
+          class="lg:hidden text-stone-800 focus:outline-none"
         >
-          <i class="fa-solid fa-bars-staggered text-2xl"></i>
+          <i class="fa-solid fa-bars text-2xl"></i>
         </button>
       </div>
 
       <div
         id="mobile-menu"
-        class="hidden lg:hidden bg-white border-b border-stone-100 px-6 py-8 space-y-6 shadow-2xl absolute w-full left-0"
+        class="hidden lg:hidden bg-white border-b border-stone-100 absolute w-full left-0 shadow-2xl"
       >
-        <div
-          class="flex flex-col space-y-5 font-bold tracking-[0.2em] uppercase text-stone-600 text-sm px-4"
-        >
-          <a href="#home" onclick="closeMenu()">Home</a>
-          <a href="#about" onclick="closeMenu()">About Us</a>
-          <a href="#services" onclick="closeMenu()">Gallery</a>
-          <a href="#location" onclick="closeMenu()">Location</a>
+        <div class="flex flex-col w-full py-2">
           <a
-            href="https://wa.me/6285777641319"
-            target="_blank"
-            class="text-emerald-800 pt-4 border-t border-stone-100"
-            >Contact WhatsApp</a
+            href="#home"
+            onclick="closeMenu()"
+            class="px-8 py-5 font-bold tracking-[0.2em] uppercase text-stone-600 text-sm border-b"
+            >Home</a
+          >
+          <a
+            href="#about"
+            onclick="closeMenu()"
+            class="px-8 py-5 font-bold tracking-[0.2em] uppercase text-stone-600 text-sm border-b"
+            >About Us</a
+          >
+          <a
+            href="#services"
+            onclick="closeMenu()"
+            class="px-8 py-5 font-bold tracking-[0.2em] uppercase text-stone-600 text-sm border-b"
+            >Gallery</a
+          >
+          <a
+            href="#location"
+            onclick="closeMenu()"
+            class="px-8 py-5 font-bold tracking-[0.2em] uppercase text-stone-600 text-sm border-b"
+            >Location</a
           >
         </div>
       </div>
@@ -155,15 +197,16 @@
       class="relative min-h-screen flex items-center pt-20 overflow-hidden"
     >
       <div
-        class="absolute top-20 right-[-10%] w-[500px] h-[500px] bg-emerald-50 rounded-full blur-3xl opacity-50 z-0"
-      ></div>
-      <div
         class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center relative z-10"
       >
-        <div class="order-2 md:order-1 text-center md:text-left">
+        <div
+          class="text-center md:text-left"
+          data-aos="fade-right"
+          data-aos-duration="1000"
+        >
           <span
-            class="text-emerald-800 font-bold tracking-[0.4em] text-[10px] uppercase mb-4 block underline underline-offset-8 decoration-emerald-200 uppercase"
-            >Sejak 2019</span
+            class="text-emerald-800 font-bold tracking-[0.4em] text-[10px] uppercase mb-4 block underline underline-offset-8 decoration-emerald-200"
+            >EST. 2019</span
           >
           <h1
             class="text-4xl md:text-7xl font-serif text-stone-800 leading-[1.1] mb-6 italic"
@@ -171,37 +214,43 @@
             Mewujudkan Pernikahan Impian
           </h1>
           <p
-            class="text-stone-500 text-lg mb-10 max-w-md mx-auto md:mx-0 leading-relaxed italic text-sm md:text-base"
+            class="text-stone-500 text-sm md:text-lg mb-10 max-w-md mx-auto md:mx-0 leading-relaxed italic"
           >
             Sentuhan dekorasi elegan serta layanan profesional lengkap untuk
             hari bahagia Anda di area Bogor & sekitarnya.
           </p>
-          <div class="flex justify-center md:justify-start">
-            <a
-              href="#services"
-              class="bg-stone-800 text-white px-10 py-5 text-[10px] tracking-[0.2em] uppercase hover:bg-emerald-900 transition shadow-2xl font-bold"
-              >Lihat Gallery</a
-            >
-          </div>
+          <a
+            href="#services"
+            class="bg-stone-800 text-white px-10 py-5 text-[10px] tracking-[0.2em] uppercase hover:bg-emerald-900 transition shadow-2xl font-bold rounded-lg inline-block"
+            >View Gallery</a
+          >
         </div>
-        <div class="order-1 md:order-2 flex justify-center">
+        <div
+          class="flex justify-center"
+          data-aos="fade-left"
+          data-aos-duration="1200"
+        >
           <div
             class="w-[260px] md:w-[400px] aspect-[4/5] bg-stone-200 rounded-t-full overflow-hidden shadow-2xl relative border-8 border-white"
           >
             <img
               src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069"
               class="w-full h-full object-cover"
-              alt="Wedding Background"
+              alt="Hero"
             />
           </div>
         </div>
       </div>
     </section>
 
-    <section id="about" class="py-20 bg-white overflow-hidden">
+    <section id="about" class="py-24 bg-white overflow-hidden">
       <div class="max-w-7xl mx-auto px-6">
         <div class="flex flex-col md:flex-row gap-12 lg:gap-20 items-center">
-          <div class="w-full md:w-1/2 relative">
+          <div
+            class="w-full md:w-1/2 relative"
+            data-aos="zoom-in"
+            data-aos-duration="1000"
+          >
             <div class="grid grid-cols-2 gap-4">
               <img
                 src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=500"
@@ -216,16 +265,20 @@
               >
                 <span
                   class="block text-2xl font-serif font-bold text-emerald-800"
-                  >10+</span
+                  >7+</span
                 >
                 <span
                   class="text-[7px] uppercase tracking-widest text-stone-400 font-bold"
-                  >Tahun Pengalaman</span
+                  >Years Experience</span
                 >
               </div>
             </div>
           </div>
-          <div class="w-full md:w-1/2 text-center md:text-left">
+          <div
+            class="w-full md:w-1/2 text-center md:text-left"
+            data-aos="fade-up"
+            data-aos-duration="1000"
+          >
             <span
               class="text-emerald-800 font-bold tracking-[0.3em] text-[10px] uppercase mb-4 block italic"
               >Specialized in Decor & Catering</span
@@ -233,30 +286,37 @@
             <h2
               class="text-3xl md:text-5xl font-serif text-stone-800 mb-6 italic leading-tight"
             >
-              Sentuhan Estetik di Setiap Detail.
+              Harmoni keindahan dalam setiap elemen
             </h2>
-            <p class="text-stone-500 leading-relaxed mb-6 text-sm text-justify">
+            <p
+              class="text-stone-500 leading-relaxed text-sm text-justify italic"
+            >
               Happy Wedding Bogor hadir sebagai partner terpercaya yang berfokus
-              pada dua elemen kunci hari bahagia Anda:
-              <strong>Dekorasi eksklusif</strong> dan
-              <strong>Catering berkualitas</strong>. Kami berdedikasi
-              menciptakan atmosfer pernikahan yang indah melalui penataan yang
-              menawan serta pilihan menu lezat.
+              pada dua elemen kunci hari bahagia Anda: dekorasi eksklusif dan
+              catering berkualitas tinggi untuk memastikan momen Anda tak
+              terlupakan. Dengan tim berpengalaman dan perhatian penuh pada
+              setiap detail, kami menghadirkan konsep pernikahan yang elegan,
+              harmonis, dan sesuai impian Anda. Kepuasan klien adalah prioritas
+              kami, karena setiap cerita cinta layak dirayakan dengan sempurna
+              dan penuh makna.
             </p>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="services" class="py-20 bg-stone-50">
+    <section id="services" class="py-24 bg-stone-50 overflow-hidden">
       <div class="max-w-7xl mx-auto px-6 text-center">
         <h2
           class="font-serif text-3xl md:text-4xl italic mb-10 uppercase tracking-widest"
+          data-aos="fade-up"
         >
           Our Gallery
         </h2>
-
-        <div class="flex justify-center space-x-6 md:space-x-12 mb-10">
+        <div
+          class="flex justify-center space-x-8 md:space-x-12 mb-12"
+          data-aos="fade-up"
+        >
           <button
             onclick="switchTab('tab-decor')"
             id="btn-tab-decor"
@@ -276,76 +336,128 @@
         <div id="tab-decor" class="tab-content active">
           <div class="gallery-grid">
             <div
-              class="gallery-item aspect-[3/4] rounded-2xl overflow-hidden shadow-md"
+              class="gallery-item rounded-2xl shadow-md"
+              data-aos="fade-up"
+              data-aos-delay="100"
               onclick="toggleGold(this)"
             >
-              <img src="img/decor1.jpeg" class="w-full h-full object-cover" />
+              <img
+                src="img/decor1.jpeg"
+                class="w-full h-full object-cover aspect-[3/4]"
+              />
             </div>
             <div
-              class="gallery-item aspect-[3/4] rounded-2xl overflow-hidden shadow-md"
+              class="gallery-item rounded-2xl shadow-md"
+              data-aos="fade-up"
+              data-aos-delay="200"
               onclick="toggleGold(this)"
             >
-              <img src="img/decor2.jpeg" class="w-full h-full object-cover" />
+              <img
+                src="img/decor2.jpeg"
+                class="w-full h-full object-cover aspect-[3/4]"
+              />
             </div>
             <div
-              class="gallery-item aspect-[3/4] rounded-2xl overflow-hidden shadow-md"
+              class="gallery-item rounded-2xl shadow-md"
+              data-aos="fade-up"
+              data-aos-delay="300"
               onclick="toggleGold(this)"
             >
-              <img src="img/decor3.jpeg" class="w-full h-full object-cover" />
+              <img
+                src="img/decor3.jpeg"
+                class="w-full h-full object-cover aspect-[3/4]"
+              />
             </div>
             <div
-              class="gallery-item aspect-[3/4] rounded-2xl overflow-hidden shadow-md"
+              class="gallery-item rounded-2xl shadow-md"
+              data-aos="fade-up"
+              data-aos-delay="400"
               onclick="toggleGold(this)"
             >
-              <img src="img/decor4.jpeg" class="w-full h-full object-cover" />
+              <img
+                src="img/decor4.jpeg"
+                class="w-full h-full object-cover aspect-[3/4]"
+              />
             </div>
             <div
-              class="gallery-item aspect-[3/4] rounded-2xl overflow-hidden shadow-md"
+              class="gallery-item rounded-2xl shadow-md"
+              data-aos="fade-up"
               onclick="toggleGold(this)"
             >
-              <img src="img/decor5.jpeg" class="w-full h-full object-cover" />
+              <img
+                src="img/decor5.jpeg"
+                class="w-full h-full object-cover aspect-[3/4]"
+              />
             </div>
             <div
-              class="gallery-item aspect-[3/4] rounded-2xl overflow-hidden shadow-md"
+              class="gallery-item rounded-2xl shadow-md"
+              data-aos="fade-up"
               onclick="toggleGold(this)"
             >
-              <img src="img/decor6.jpeg" class="w-full h-full object-cover" />
+              <img
+                src="img/decor6.jpeg"
+                class="w-full h-full object-cover aspect-[3/4]"
+              />
             </div>
             <div
-              class="gallery-item aspect-[3/4] rounded-2xl overflow-hidden shadow-md"
+              class="gallery-item rounded-2xl shadow-md"
+              data-aos="fade-up"
               onclick="toggleGold(this)"
             >
-              <img src="img/decor7.jpeg" class="w-full h-full object-cover" />
+              <img
+                src="img/decor7.jpeg"
+                class="w-full h-full object-cover aspect-[3/4]"
+              />
             </div>
             <div
-              class="gallery-item aspect-[3/4] rounded-2xl overflow-hidden shadow-md"
+              class="gallery-item rounded-2xl shadow-md"
+              data-aos="fade-up"
               onclick="toggleGold(this)"
             >
-              <img src="img/decor8.jpeg" class="w-full h-full object-cover" />
+              <img
+                src="img/decor8.jpeg"
+                class="w-full h-full object-cover aspect-[3/4]"
+              />
             </div>
             <div
-              class="gallery-item aspect-[3/4] rounded-2xl overflow-hidden shadow-md"
+              class="gallery-item rounded-2xl shadow-md"
+              data-aos="fade-up"
               onclick="toggleGold(this)"
             >
-              <img src="img/decor9.jpeg" class="w-full h-full object-cover" />
+              <img
+                src="img/decor9.jpeg"
+                class="w-full h-full object-cover aspect-[3/4]"
+              />
             </div>
             <div
-              class="gallery-item aspect-[3/4] rounded-2xl overflow-hidden shadow-md"
+              class="gallery-item rounded-2xl shadow-md"
+              data-aos="fade-up"
               onclick="toggleGold(this)"
             >
-              <img src="img/decor10.jpeg" class="w-full h-full object-cover" />
+              <img
+                src="img/decor10.jpeg"
+                class="w-full h-full object-cover aspect-[3/4]"
+              />
             </div>
             <div
-              class="gallery-item aspect-[3/4] rounded-2xl overflow-hidden shadow-md"
+              class="gallery-item rounded-2xl shadow-md"
+              data-aos="fade-up"
               onclick="toggleGold(this)"
             >
-              <img src="img/decor11.jpeg" class="w-full h-full object-cover" />
+              <img
+                src="img/decor11.jpeg"
+                class="w-full h-full object-cover aspect-[3/4]"
+              />
             </div>
             <div
-              class="gallery-item aspect-[3/4] rounded-2xl overflow-hidden shadow-md"
+              class="gallery-item rounded-2xl shadow-md"
+              data-aos="fade-up"
               onclick="toggleGold(this)"
             >
-              <img src="img/decor12.jpeg" class="w-full h-full object-cover" />
+              <img
+                src="img/decor12.jpeg"
+                class="w-full h-full object-cover aspect-[3/4]"
+              />
             </div>
           </div>
         </div>
@@ -353,111 +465,111 @@
         <div id="tab-catering" class="tab-content">
           <div class="gallery-grid">
             <div
-              class="gallery-item aspect-[3/4] rounded-2xl overflow-hidden shadow-md"
+              class="gallery-item rounded-2xl shadow-md"
               onclick="toggleGold(this)"
             >
               <img
                 src="img/catering1.jpeg"
-                class="w-full h-full object-cover"
+                class="w-full h-full object-cover aspect-[3/4]"
               />
             </div>
             <div
-              class="gallery-item aspect-[3/4] rounded-2xl overflow-hidden shadow-md"
+              class="gallery-item rounded-2xl shadow-md"
               onclick="toggleGold(this)"
             >
               <img
                 src="img/catering2.jpeg"
-                class="w-full h-full object-cover"
+                class="w-full h-full object-cover aspect-[3/4]"
               />
             </div>
             <div
-              class="gallery-item aspect-[3/4] rounded-2xl overflow-hidden shadow-md"
+              class="gallery-item rounded-2xl shadow-md"
               onclick="toggleGold(this)"
             >
               <img
                 src="img/catering3.jpeg"
-                class="w-full h-full object-cover"
+                class="w-full h-full object-cover aspect-[3/4]"
               />
             </div>
             <div
-              class="gallery-item aspect-[3/4] rounded-2xl overflow-hidden shadow-md"
+              class="gallery-item rounded-2xl shadow-md"
               onclick="toggleGold(this)"
             >
               <img
                 src="img/catering4.jpeg"
-                class="w-full h-full object-cover"
+                class="w-full h-full object-cover aspect-[3/4]"
               />
             </div>
             <div
-              class="gallery-item aspect-[3/4] rounded-2xl overflow-hidden shadow-md"
+              class="gallery-item rounded-2xl shadow-md"
               onclick="toggleGold(this)"
             >
               <img
                 src="img/catering5.jpeg"
-                class="w-full h-full object-cover"
+                class="w-full h-full object-cover aspect-[3/4]"
               />
             </div>
             <div
-              class="gallery-item aspect-[3/4] rounded-2xl overflow-hidden shadow-md"
+              class="gallery-item rounded-2xl shadow-md"
               onclick="toggleGold(this)"
             >
               <img
                 src="img/catering6.jpeg"
-                class="w-full h-full object-cover"
+                class="w-full h-full object-cover aspect-[3/4]"
               />
             </div>
             <div
-              class="gallery-item aspect-[3/4] rounded-2xl overflow-hidden shadow-md"
+              class="gallery-item rounded-2xl shadow-md"
               onclick="toggleGold(this)"
             >
               <img
                 src="img/catering7.jpeg"
-                class="w-full h-full object-cover"
+                class="w-full h-full object-cover aspect-[3/4]"
               />
             </div>
             <div
-              class="gallery-item aspect-[3/4] rounded-2xl overflow-hidden shadow-md"
+              class="gallery-item rounded-2xl shadow-md"
               onclick="toggleGold(this)"
             >
               <img
                 src="img/catering8.jpeg"
-                class="w-full h-full object-cover"
+                class="w-full h-full object-cover aspect-[3/4]"
               />
             </div>
             <div
-              class="gallery-item aspect-[3/4] rounded-2xl overflow-hidden shadow-md"
+              class="gallery-item rounded-2xl shadow-md"
               onclick="toggleGold(this)"
             >
               <img
                 src="img/catering9.jpeg"
-                class="w-full h-full object-cover"
+                class="w-full h-full object-cover aspect-[3/4]"
               />
             </div>
             <div
-              class="gallery-item aspect-[3/4] rounded-2xl overflow-hidden shadow-md"
+              class="gallery-item rounded-2xl shadow-md"
               onclick="toggleGold(this)"
             >
               <img
                 src="img/catering10.jpeg"
-                class="w-full h-full object-cover"
+                class="w-full h-full object-cover aspect-[3/4]"
               />
             </div>
             <div
-              class="gallery-item aspect-[3/4] rounded-2xl overflow-hidden shadow-md"
+              class="gallery-item rounded-2xl shadow-md"
               onclick="toggleGold(this)"
             >
               <img
                 src="img/catering11.jpeg"
-                class="w-full h-full object-cover"
+                class="w-full h-full object-cover aspect-[3/4]"
               />
             </div>
             <div
-              class="gallery-item aspect-[3/4] rounded-2xl overflow-hidden shadow-md"
+              class="gallery-item rounded-2xl shadow-md"
               onclick="toggleGold(this)"
             >
               <img
                 src="img/catering12.jpeg"
-                class="w-full h-full object-cover"
+                class="w-full h-full object-cover aspect-[3/4]"
               />
             </div>
           </div>
@@ -465,57 +577,53 @@
       </div>
     </section>
 
-    <section id="location" class="py-16 bg-white">
-      <div class="max-w-7xl mx-auto px-6">
-        <div class="grid lg:grid-cols-2 gap-10 items-center">
-          <div class="space-y-6">
-            <div>
-              <span
-                class="text-emerald-800 font-bold tracking-[0.4em] text-[10px] uppercase mb-2 block decoration-emerald-200 uppercase"
-                >Workshop Lokasi</span
-              >
-              <h2
-                class="font-serif text-3xl md:text-5xl italic text-stone-800 leading-tight"
-              >
-                Silaturahmi ke Workshop Kami
-              </h2>
-            </div>
-            <div
-              class="bg-[#F9F8F6] p-6 rounded-[24px] border border-stone-100 shadow-sm"
+    <section id="location" class="py-24 bg-white overflow-hidden">
+      <div class="max-w-6xl mx-auto px-6">
+        <div
+          class="flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-16"
+        >
+          <div
+            class="w-full lg:w-1/2 text-center lg:text-left flex flex-col items-center lg:items-start"
+            data-aos="fade-right"
+          >
+            <h2
+              class="text-3xl md:text-5xl font-serif text-stone-800 mb-8 italic"
             >
-              <div class="flex items-center gap-4 mb-6">
-                <div
-                  class="w-10 h-10 bg-emerald-800 rounded-xl flex items-center justify-center text-white shrink-0 shadow-lg shadow-emerald-100"
-                >
-                  <i class="fa-solid fa-location-dot"></i>
-                </div>
-                <div>
-                  <h4
-                    class="font-bold text-stone-800 uppercase tracking-widest text-[9px]"
-                  >
-                    Alamat Presisi
-                  </h4>
-                  <p class="text-xs text-stone-600 leading-snug">
-                    Jl. Cikerti No. 103 RT.02 / RW.06, Ciomas, Bogor.
-                  </p>
-                </div>
-              </div>
-              <a
-                href="https://maps.app.goo.gl/YourActualGoogleMapsLink"
-                target="_blank"
-                class="flex items-center justify-center gap-3 w-full bg-stone-800 hover:bg-emerald-900 text-white py-4 rounded-xl transition-all active:scale-95 text-[10px] font-bold uppercase tracking-widest"
+              Our Home Location
+            </h2>
+            <div class="flex flex-row items-start gap-4 mb-10 text-left">
+              <div
+                class="w-10 h-10 shrink-0 bg-stone-100 rounded-full flex items-center justify-center mt-1"
               >
-                <i class="fa-solid fa-route"></i> Petunjuk Jalan (GPS)
-              </a>
+                <i class="fa-solid fa-location-dot text-stone-600 text-sm"></i>
+              </div>
+              <div class="max-w-xs md:max-w-sm">
+                <h4 class="text-[10px] font-bold text-stone-400 uppercase mb-1">
+                  Alamat
+                </h4>
+                <p class="text-stone-600 text-sm italic">
+                  Komplek perumahan the Manzil blok B26, Ciherang, Bogor, Jawa
+                  Barat.
+                </p>
+              </div>
             </div>
+            <a
+              href="https://www.google.com/maps/dir/?api=1&destination=-6.583689,106.745390"
+              target="_blank"
+              class="bg-stone-800 text-white px-8 py-4 text-[10px] font-bold rounded-xl shadow-lg uppercase tracking-widest hover:bg-emerald-800 transition"
+              >Petunjuk Jalan (Maps)</a
+            >
           </div>
-          <div class="relative w-full h-[300px] md:h-[400px]">
+          <div class="w-full lg:w-[480px]" data-aos="zoom-in-left">
             <div
-              class="w-full h-full rounded-[32px] overflow-hidden border-4 border-stone-50 shadow-xl"
+              class="rounded-[2rem] overflow-hidden shadow-xl border-[4px] border-[#F9F8F6]"
             >
               <iframe
-                src="https://www.google.com/maps/embed?pb=..."
-                class="w-full h-full border-0 grayscale hover:grayscale-0 transition-all duration-700"
+                src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3963.218524451631!2d106.7428150749938!3d-6.583688993409951!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNsKwMzUnMDEuMyJTIDEwNiw0NSc0My40IkU!5e0!3m2!1sid!2sid!4v1715600000000!5m2!1sid!2sid"
+                width="100%"
+                height="320"
+                style="border: 0"
+                allowfullscreen=""
                 loading="lazy"
               ></iframe>
             </div>
@@ -524,69 +632,59 @@
       </div>
     </section>
 
-    <footer class="bg-white border-t border-stone-100 py-10">
-      <div class="max-w-7xl mx-auto px-6 text-center">
-        <div class="mb-8 text-center">
-          <h3
-            class="font-serif text-2xl text-stone-800 italic tracking-widest uppercase"
-          >
-            Happy Wedding
-          </h3>
-          <p
-            class="text-[8px] tracking-[0.4em] text-stone-400 uppercase font-bold mt-1"
-          >
-            Premium Wedding Organizer Bogor
-          </p>
+    <footer class="bg-white border-t border-stone-100 pt-16 pb-8">
+      <div class="max-w-7xl mx-auto px-6 flex flex-col items-center">
+        <div class="flex space-x-12 mb-12">
+          <a href="#" class="footer-icon icon-wa text-2xl"
+            ><i class="fa-brands fa-whatsapp"></i
+          ></a>
+          <a href="#" class="footer-icon icon-ig text-2xl"
+            ><i class="fa-brands fa-instagram"></i
+          ></a>
+          <a href="#" class="footer-icon icon-tt text-2xl"
+            ><i class="fa-brands fa-tiktok"></i
+          ></a>
         </div>
-
-        <div class="flex justify-center items-center gap-8 mb-8">
-          <a
-            href="https://www.instagram.com/happywedding_bogor/"
-            target="_blank"
-            class="group flex flex-col items-center gap-2"
-          >
-            <div
-              class="w-10 h-10 rounded-full border border-stone-100 flex items-center justify-center text-stone-400 group-hover:bg-[#E4405F] group-hover:text-white transition-all duration-300"
-            >
-              <i class="fa-brands fa-instagram text-lg"></i>
-            </div>
-            <span
-              class="text-[8px] font-bold uppercase tracking-widest text-stone-400 group-hover:text-[#E4405F]"
-              >Instagram</span
-            >
-          </a>
-
-          <a
-            href="https://wa.me/6285777641319"
-            target="_blank"
-            class="group flex flex-col items-center gap-2"
-          >
-            <div
-              class="w-10 h-10 rounded-full border border-stone-100 flex items-center justify-center text-stone-400 group-hover:bg-[#25D366] group-hover:text-white transition-all duration-300"
-            >
-              <i class="fa-brands fa-whatsapp text-lg"></i>
-            </div>
-            <span
-              class="text-[8px] font-bold uppercase tracking-widest text-stone-400 group-hover:text-[#25D366]"
-              >WhatsApp</span
-            >
-          </a>
-        </div>
-
         <p
-          class="text-[8px] text-stone-300 font-bold uppercase tracking-[0.3em] pt-8 border-t border-stone-50"
+          class="text-[10px] text-stone-500 font-semibold uppercase tracking-[0.2em]"
         >
-          © 2026 Happy Wedding Organizer. Bogor, Indonesia.
+          © 2026 Happy Wedding Organizer Bogor.
         </p>
       </div>
     </footer>
 
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
+      AOS.init({ duration: 1000, once: false, mirror: true });
+
+      // Navbar Scroll Logic
+      let lastScrollTop = 0;
+      window.addEventListener("scroll", function () {
+        let st = window.pageYOffset || document.documentElement.scrollTop;
+        const nav = document.getElementById("navbar");
+        if (st > lastScrollTop && st > 100)
+          nav.style.transform = "translateY(-100%)";
+        else nav.style.transform = "translateY(0)";
+        lastScrollTop = st <= 0 ? 0 : st;
+      });
+
+      // Mobile Menu
       const btn = document.getElementById("menu-btn");
       const menu = document.getElementById("mobile-menu");
       btn.addEventListener("click", () => menu.classList.toggle("hidden"));
       const closeMenu = () => menu.classList.add("hidden");
 
+      // Smooth Scroll
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target)
+            window.scrollTo({ top: target.offsetTop - 80, behavior: "smooth" });
+        });
+      });
+
+      // Gallery Logic
       function toggleGold(element) {
         document
           .querySelectorAll(".gallery-item")
@@ -600,14 +698,13 @@
           .forEach((tab) => tab.classList.remove("active"));
         document.getElementById(tabId).classList.add("active");
         const isDecor = tabId === "tab-decor";
-
         document.getElementById("btn-tab-decor").className = isDecor
           ? "pb-3 px-2 text-[10px] font-bold uppercase tracking-widest border-b-2 border-emerald-800 text-emerald-800 transition-all"
           : "pb-3 px-2 text-[10px] font-bold uppercase tracking-widest border-b-2 border-transparent text-stone-400 transition-all";
-
         document.getElementById("btn-tab-catering").className = !isDecor
           ? "pb-3 px-2 text-[10px] font-bold uppercase tracking-widest border-b-2 border-emerald-800 text-emerald-800 transition-all"
           : "pb-3 px-2 text-[10px] font-bold uppercase tracking-widest border-b-2 border-transparent text-stone-400 transition-all";
+        AOS.refresh();
       }
     </script>
   </body>
